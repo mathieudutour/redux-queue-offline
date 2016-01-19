@@ -7,6 +7,9 @@
   "files": [
     "lib"
   ],
+  "peerDependencies": {
+    "react": ">=0.11.2"
+  },
   "dependencies": {
     "key-del": "1.2.3"
   },
