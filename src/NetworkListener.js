@@ -1,30 +1,30 @@
-import React from 'react';
-import { ONLINE, OFFLINE } from './actions';
+import React from 'react'
+import { ONLINE, OFFLINE } from './actions'
 
 export const NetworkListener = Provider => React.createClass({
-  componentDidMount() {
+  componentDidMount () {
     if (window && window.addEventListener) {
-      window.addEventListener('online', this._onlineListener);
-      window.addEventListener('offline', this._onlineListener);
+      window.addEventListener('online', this._onlineListener)
+      window.addEventListener('offline', this._onlineListener)
     }
   },
-  componentDidUnmount() {
+  componentDidUnmount () {
     if (window && window.removeEventListener) {
-      window.removeEventListener('online', this._onlineListener);
-      window.removeEventListener('offline', this._onlineListener);
+      window.removeEventListener('online', this._onlineListener)
+      window.removeEventListener('offline', this._onlineListener)
     }
   },
-  render() {
-    return <Provider {...this.props} />;
+  render () {
+    return <Provider {...this.props} />
   },
-  _onlineListener() {
+  _onlineListener () {
     this.props.store.dispatch({
       type: ONLINE
-    });
+    })
   },
-  _offlineListener() {
+  _offlineListener () {
     this.props.store.dispatch({
       type: OFFLINE
-    });
+    })
   }
-});
+})

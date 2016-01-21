@@ -1,10 +1,13 @@
-import * as actions from './actions';
+import * as actions from './actions'
+import middleware from './middleware'
+import reducer from './reducer'
+import {NetworkListener} from './NetworkListener'
 
 module.exports = {
   ONLINE: actions.ONLINE,
   OFFLINE: actions.OFFLINE,
   QUEUE_ACTION: actions.QUEUE_ACTION,
-  NetworkListener: require('./NetworkListener').NetworkListener,
-  middleware: require('./middleware'),
-  reducer: require('./reducer')
-};
+  NetworkListener,
+  middleware,
+  reducer
+}

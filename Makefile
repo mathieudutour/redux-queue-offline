@@ -1,6 +1,6 @@
 BIN=node_modules/.bin
 
-MOCHA_ARGS= --compilers js:babel/register \
+MOCHA_ARGS= --compilers js:babel-register \
 		--recursive \
 		--require tests/init.js \
 		tests/*.js
