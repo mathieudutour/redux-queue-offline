@@ -1,6 +1,6 @@
 {
   "name": "redux-queue-offline",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Queue actions when offline and dispatch them when getting back online",
   "keywords": [],
   "main": "lib/index.js",
@@ -20,7 +20,6 @@
     "babel-eslint": "5.0.0-beta6",
     "babel-polyfill": "6.3.14",
     "babel-preset-es2015": "6.3.13",
-    "babel-preset-react": "6.3.13",
     "babel-preset-stage-0": "6.3.13",
     "babel-register": "6.4.3",
     "chai": "3.4.1",
