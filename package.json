@@ -1,6 +1,6 @@
 {
   "name": "redux-queue-offline",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Queue actions when offline and dispatch them when getting back online",
   "keywords": [],
   "main": "lib/index.js",
@@ -11,7 +11,7 @@
     "react": ">=0.11.2"
   },
   "dependencies": {
-    "key-del": "1.2.3"
+    "lodash.unset": "4.0.2"
   },
   "devDependencies": {
     "babel": "6.3.26",

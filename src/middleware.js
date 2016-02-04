@@ -1,4 +1,4 @@
-import del from 'key-del'
+import unset from 'lodash.unset'
 import { INITIAL_STATE } from './initialState'
 import { QUEUE_ACTION, ONLINE } from './actions'
 
@@ -49,7 +49,7 @@ export default function middleware (stateName = STATE_NAME, asyncPayloadFields =
     })
 
     let actionToDispatchNow = action
-    ASYNC_PAYLOAD_FIELDS.forEach(field => { actionToDispatchNow = del(action, field) })
+    ASYNC_PAYLOAD_FIELDS.forEach(field => { unset(actionToDispatchNow, field) })
 
     return next(actionToDispatchNow)
   }
