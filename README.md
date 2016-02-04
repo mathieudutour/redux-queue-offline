@@ -3,6 +3,8 @@ redux-queue-offline
 
 [![build status](https://img.shields.io/travis/mathieudutour/redux-queue-offline/master.svg?style=flat-square)](https://travis-ci.org/mathieudutour/redux-queue-offline)
 [![npm version](https://img.shields.io/npm/v/redux-queue-offline.svg?style=flat-square)](https://www.npmjs.com/package/redux-queue-offline)
+[![Dependency Status](https://david-dm.org/mathieudutour/redux-queue-offline.svg)](https://david-dm.org/mathieudutour/redux-queue-offline)
+[![devDependency Status](https://david-dm.org/mathieudutour/redux-queue-offline/dev-status.svg)](https://david-dm.org/mathieudutour/redux-queue-offline#info=devDependencies)
 
 Queue actions when offline and dispatch them when getting back online.
 
