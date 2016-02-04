@@ -137,13 +137,13 @@ ReactDOM.render(
 
 ## Configuration
 
-You can configure the name of the reducer (default to `offlineQueue`) and the field being deleted from the action when offline (default to `payload.promise`).
+You can configure the name of the reducer (default to `offlineQueue`) and the fields being deleted from the action when offline (default to `payload.promise`).
 
 ```js
 import { middleware as offlineQueueMiddleware } from 'redux-queue-offline';
 
 composeStoreWithMiddleware = applyMiddleware(
-  offlineQueueMiddleware('myOfflineQueueReducerName', 'payload.thunk')
+  offlineQueueMiddleware('myOfflineQueueReducerName', ['payload.thunk', 'meta.redirect'])
 )(createStore);
 
 ```

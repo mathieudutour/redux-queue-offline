@@ -3,11 +3,11 @@ import { INITIAL_STATE } from './initialState'
 import { QUEUE_ACTION, ONLINE } from './actions'
 
 let STATE_NAME = 'offlineQueue'
-let ASYNC_PAYLOAD_FIELD = 'payload.promise'
+let ASYNC_PAYLOAD_FIELDS = ['payload.promise']
 
-export default function middleware (stateName = STATE_NAME, asyncPayloadField = ASYNC_PAYLOAD_FIELD) {
+export default function middleware (stateName = STATE_NAME, asyncPayloadFields = ASYNC_PAYLOAD_FIELDS) {
   STATE_NAME = stateName
-  ASYNC_PAYLOAD_FIELD = asyncPayloadField
+  ASYNC_PAYLOAD_FIELDS = asyncPayloadFields
   return ({ getState, dispatch }) => next => action => {
     const state = (getState() || {})[STATE_NAME] || INITIAL_STATE
 
@@ -48,7 +48,8 @@ export default function middleware (stateName = STATE_NAME, asyncPayloadField = 
       payload: actionToQueue
     })
 
-    const actionToDispatchNow = del(action, ASYNC_PAYLOAD_FIELD)
+    let actionToDispatchNow = action
+    ASYNC_PAYLOAD_FIELDS.forEach(field => { actionToDispatchNow = del(action, field) })
 
     return next(actionToDispatchNow)
   }
