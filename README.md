@@ -10,7 +10,7 @@ Queue actions when offline and dispatch them when getting back online.
 
 Working nicely together with [redux-optimist-promise](https://github.com/mathieudutour/redux-optimist-promise).
 
-```js
+```bash
 npm install --save redux-queue-offline
 ```
 
@@ -21,16 +21,16 @@ npm install --save redux-queue-offline
 #### `reducers/index.js`
 
 ```js
-import { reducer as offlineQueue } from 'redux-queue-offline';
-import { combineReducers } from 'redux';
-import todos from './todos';
-import status from './status';
+import { reducer as offlineQueue } from 'redux-queue-offline'
+import { combineReducers } from 'redux'
+import todos from './todos'
+import status from './status'
 
-export default optimist(combineReducers({
+export default combineReducers({
   offlineQueue,
   todos,
   status
-}));
+})
 ```
 
 ## Step 2: Use the offlineQueue middleware
@@ -38,11 +38,11 @@ export default optimist(combineReducers({
 First, import the middleware creator and include it in `applyMiddleware` when creating the Redux store. **You need to call it as a function (See later why on configuration section below):**
 
 ```js
-import { middleware as offlineQueueMiddleware } from 'redux-queue-offline';
+import { middleware as offlineQueueMiddleware } from 'redux-queue-offline'
 
-composeStoreWithMiddleware = applyMiddleware(
+const composeStoreWithMiddleware = applyMiddleware(
   offlineQueueMiddleware()
-)(createStore);
+)(createStore)
 
 ```
 
@@ -60,7 +60,7 @@ store.dispatch({
   meta: {
     queueIfOffline: true
   }
-});
+})
 ```
 
 When the app is offline, the following actions will be dispatch:
@@ -114,20 +114,20 @@ Once getting back online, the following action will be dispatch:
 The state of the app (online or offline) is stored in the state. To update it, dispatch the `ONLINE` or `OFFLINE` actions.
 
 ```js
-import { ONLINE, OFFLINE } from 'redux-queue-offline';
+import { ONLINE, OFFLINE } from 'redux-queue-offline'
 
-dispatch({ type: ONLINE });
+dispatch({ type: ONLINE })
 
-dispatch({ type: OFFLINE });
+dispatch({ type: OFFLINE })
 ```
 
 You can use the NetworkListener [high order component](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775) from [redux-queue-offline-listener](https://github.com/mathieudutour/redux-queue-offline-listener) to wrap the redux Provider and automatically dispatch the ONLINE and OFFLINE action when listening to `window.on('online')` and `window.on('online')`.
 
 ```js
-import NetworkListener from 'redux-queue-offline-listner';
-import { Provider } from 'react-redux';
+import NetworkListener from 'redux-queue-offline-listner'
+import { Provider } from 'react-redux'
 
-const NetworkListenerProvider = NetworkListener(Provider);
+const NetworkListenerProvider = NetworkListener(Provider)
 
 ReactDOM.render(
   <NetworkListenerProvider store={store}>
@@ -142,11 +142,11 @@ ReactDOM.render(
 You can configure the name of the reducer (default to `offlineQueue`) and the fields being deleted from the action when offline (default to `payload.promise`).
 
 ```js
-import { middleware as offlineQueueMiddleware } from 'redux-queue-offline';
+import { middleware as offlineQueueMiddleware } from 'redux-queue-offline'
 
-composeStoreWithMiddleware = applyMiddleware(
+const composeStoreWithMiddleware = applyMiddleware(
   offlineQueueMiddleware('myOfflineQueueReducerName', ['payload.thunk', 'meta.redirect'])
-)(createStore);
+)(createStore)
 
 ```
 
