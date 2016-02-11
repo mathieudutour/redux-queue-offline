@@ -8,7 +8,7 @@ let ASYNC_PAYLOAD_FIELDS = ['payload.promise']
 export default function middleware (stateName = STATE_NAME, asyncPayloadFields = ASYNC_PAYLOAD_FIELDS) {
   STATE_NAME = stateName
   ASYNC_PAYLOAD_FIELDS = asyncPayloadFields
-  return ({ getState, dispatch }) => next => action => {
+  return ({ getState, dispatch }) => (next) => (action) => {
     const state = (getState() || {})[STATE_NAME] || INITIAL_STATE
 
     const { isOnline, queue } = state
@@ -16,7 +16,7 @@ export default function middleware (stateName = STATE_NAME, asyncPayloadFields =
     // check if it's a direct action for us
     if (action.type === ONLINE) {
       const result = next(action)
-      queue.forEach(actionInQueue => dispatch(actionInQueue))
+      queue.forEach((actionInQueue) => dispatch(actionInQueue))
       return result
     }
 
@@ -49,7 +49,7 @@ export default function middleware (stateName = STATE_NAME, asyncPayloadFields =
     })
 
     let actionToDispatchNow = action
-    ASYNC_PAYLOAD_FIELDS.forEach(field => { unset(actionToDispatchNow, field) })
+    ASYNC_PAYLOAD_FIELDS.forEach((field) => { unset(actionToDispatchNow, field) })
 
     return next(actionToDispatchNow)
   }
