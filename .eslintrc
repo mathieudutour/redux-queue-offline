@@ -1,9 +1,6 @@
 {
   "extends": "standard",
   "parser": "babel-eslint",
-  "plugins": [
-    "markdown"
-  ],
   "env": {
     "mocha": true,
     "node": true
