@@ -14,7 +14,7 @@
     "lodash.unset": "4.1.0"
   },
   "devDependencies": {
-    "babel": "^6.5.1",
+    "babel": "^6.5.2",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.1",
     "babel-eslint": "^5.0.0-beta10",
