@@ -8,7 +8,7 @@
     "lib"
   ],
   "peerDependencies": {
-    "react": ">=0.11.2"
+    "react": ">=0.14.7"
   },
   "dependencies": {
     "lodash.unset": "4.2.1"
