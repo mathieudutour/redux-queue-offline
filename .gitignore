@@ -1,6 +1,16 @@
-pids
-logs
-npm-debug.log
+# build artefacts
+build
+
+# npm
 node_modules
-/lib
-coverage
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history

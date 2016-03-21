@@ -1,14 +1,4 @@
 {
-  "extends": "standard",
-  "parser": "babel-eslint",
-  "env": {
-    "mocha": true,
-    "node": true
-  },
-  "globals": {
-    "expect": true
-  },
-  "rules": {
-    "no-unused-expressions": 0
-  }
+  "extends": ["standard", "plugin:import/warnings", "plugin:import/errors"],
+  "parser": "babel-eslint"
 }

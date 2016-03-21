@@ -1,133 +1,126 @@
-import { middleware, QUEUE_ACTION, ONLINE } from '../src/'
+import test from 'ava'
+import { middleware, QUEUE_ACTION, ONLINE } from '../src/' // eslint-disable-line
 import { spy } from 'sinon'
 import { INITIAL_STATE } from '../src/initialState'
 
-describe('queue middleware', () => {
-  let next
-  let dispatch
-  let foobar
-  let promise
-  let state
+test.beforeEach((t) => {
+  t.context.next = spy()
+  t.context.state = {...INITIAL_STATE}
+  t.context.dispatch = function d (action) {
+    const store = { dispatch: d, getState: () => { return {offlineQueue: t.context.state} } }
+    return middleware()(store)(t.context.next)(action)
+  }
+  t.context.foobar = { foo: 'bar' }
+  t.context.promise = {url: '/api', method: 'GET'}
+})
 
-  beforeEach(() => {
-    next = spy()
-    state = {...INITIAL_STATE}
-    dispatch = function d (action) {
-      const store = { dispatch: d, getState: () => { return {offlineQueue: state} } }
-      return middleware()(store)(next)(action)
+test('dispatches action when online', (t) => {
+  t.context.dispatch({
+    type: 'ACTION_TYPE',
+    payload: {
+      promise: t.context.promise
+    },
+    meta: {
+      queueIfOffline: true
     }
-    foobar = { foo: 'bar' }
-    promise = {url: '/api', method: 'GET'}
   })
 
-  it('dispatches action when online', () => {
-    dispatch({
+  t.true(t.context.next.calledOnce)
+
+  t.same(t.context.next.firstCall.args[0], {
+    type: 'ACTION_TYPE',
+    payload: {
+      promise: t.context.promise
+    },
+    meta: {
+      queueIfOffline: true
+    }
+  })
+})
+
+test('dispatches QUEUE action and normal action without payload.promise when offline', (t) => {
+  t.context.state.isOnline = false
+  t.context.dispatch({
+    type: 'ACTION_TYPE',
+    payload: {
+      promise: t.context.promise
+    },
+    meta: {
+      queueIfOffline: true
+    }
+  })
+
+  t.true(t.context.next.calledTwice)
+
+  t.same(t.context.next.firstCall.args[0], {
+    type: QUEUE_ACTION,
+    payload: {
       type: 'ACTION_TYPE',
       payload: {
-        promise
+        promise: t.context.promise
       },
       meta: {
-        queueIfOffline: true
+        queueIfOffline: true,
+        skipOptimist: true
       }
-    })
-
-    expect(next.calledOnce).to.be.true
-
-    expect(next.firstCall.args[0]).to.deep.equal({
-      type: 'ACTION_TYPE',
-      payload: {
-        promise
-      },
-      meta: {
-        queueIfOffline: true
-      }
-    })
+    }
   })
 
-  it('dispatches QUEUE action and normal action without payload.promise when offline', () => {
-    state.isOnline = false
-    dispatch({
-      type: 'ACTION_TYPE',
-      payload: {
-        promise
-      },
-      meta: {
-        queueIfOffline: true
-      }
-    })
+  t.same(t.context.next.secondCall.args[0], {
+    type: 'ACTION_TYPE',
+    payload: {},
+    meta: {
+      queueIfOffline: true
+    }
+  })
+})
 
-    expect(next.calledTwice).to.be.true
-
-    expect(next.firstCall.args[0]).to.deep.equal({
-      type: QUEUE_ACTION,
-      payload: {
-        type: 'ACTION_TYPE',
-        payload: {
-          promise
-        },
-        meta: {
-          queueIfOffline: true,
-          skipOptimist: true
-        }
-      }
-    })
-
-    expect(next.secondCall.args[0]).to.deep.equal({
-      type: 'ACTION_TYPE',
-      payload: {},
-      meta: {
-        queueIfOffline: true
-      }
-    })
+test('dispatches queued actions on ONLINE action', (t) => {
+  t.context.state.queue = [{
+    type: 'ACTION_TYPE'
+  }]
+  t.context.dispatch({
+    type: ONLINE
   })
 
-  it('dispatches queued actions on ONLINE action', () => {
-    state.queue = [{
-      type: 'ACTION_TYPE'
-    }]
-    dispatch({
-      type: ONLINE
-    })
+  t.true(t.context.next.calledTwice)
 
-    expect(next.calledTwice).to.be.true
-
-    expect(next.firstCall.args[0]).to.deep.equal({
-      type: ONLINE
-    })
-
-    expect(next.secondCall.args[0]).to.deep.equal({
-      type: 'ACTION_TYPE'
-    })
+  t.same(t.context.next.firstCall.args[0], {
+    type: ONLINE
   })
 
-  it('ignores non-promises', () => {
-    dispatch(foobar)
-    expect(next.calledOnce).to.be.true
-    expect(next.firstCall.args[0]).to.equal(foobar)
+  t.same(t.context.next.secondCall.args[0], {
+    type: 'ACTION_TYPE'
+  })
+})
 
-    dispatch({ type: 'ACTION_TYPE', payload: foobar })
-    expect(next.calledTwice).to.be.true
-    expect(next.secondCall.args[0]).to.deep.equal({
-      type: 'ACTION_TYPE',
-      payload: foobar
-    })
+test('ignores non-promises', (t) => {
+  t.context.dispatch(t.context.foobar)
+  t.true(t.context.next.calledOnce)
+  t.same(t.context.next.firstCall.args[0], t.context.foobar)
+
+  t.context.dispatch({ type: 'ACTION_TYPE', payload: t.context.foobar })
+  t.true(t.context.next.calledTwice)
+  t.same(t.context.next.secondCall.args[0], {
+    type: 'ACTION_TYPE',
+    payload: t.context.foobar
+  })
+})
+
+test('ignores non-"queueIfOffline" action', (t) => {
+  t.context.state.isOnline = false
+  t.context.dispatch({
+    type: 'ACTION_TYPE',
+    payload: {
+      promise: t.context.foobar
+    }
   })
 
-  it('ignores non-"queueIfOffline" action', () => {
-    state.isOnline = false
-    dispatch({
-      type: 'ACTION_TYPE',
-      payload: {
-        promise: foobar
-      }
-    })
-
-    expect(next.calledOnce).to.be.true
-    expect(next.firstCall.args[0]).to.deep.equal({
-      type: 'ACTION_TYPE',
-      payload: {
-        promise: foobar
-      }
-    })
+  t.true(t.context.next.calledOnce)
+  t.same(t.context.next.firstCall.args[0], {
+    type: 'ACTION_TYPE',
+    payload: {
+      promise: t.context.foobar
+    }
   })
 })
