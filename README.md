@@ -124,7 +124,7 @@ dispatch({ type: OFFLINE })
 You can use the NetworkListener [high order component](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775) from [redux-queue-offline-listener](https://github.com/mathieudutour/redux-queue-offline-listener) to wrap the redux Provider and automatically dispatch the ONLINE and OFFLINE action when listening to `window.on('online')` and `window.on('offline')`.
 
 ```js
-import NetworkListener from 'redux-queue-offline-listner'
+import NetworkListener from 'redux-queue-offline-listener'
 import { Provider } from 'react-redux'
 
 const NetworkListenerProvider = NetworkListener(Provider)
