@@ -10,7 +10,7 @@
     "src"
   ],
   "dependencies": {
-    "lodash.unset": "4.4.0"
+    "lodash.unset": "4.5.0"
   },
   "devDependencies": {
     "@mathieudutour/js-fatigue": "1.0.2"
