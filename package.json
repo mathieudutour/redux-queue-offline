@@ -1,6 +1,6 @@
 {
   "name": "redux-queue-offline",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Queue actions when offline and dispatch them when getting back online",
   "keywords": [],
   "main": "build/index.js",
